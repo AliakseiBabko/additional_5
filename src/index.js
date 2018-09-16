@@ -1,33 +1,20 @@
 module.exports = function check(str, bracketsConfig) {
   // your solution
-let configSize = bracketsConfig.length;
-let strSize = str.length;
-let leftConfig = [], rightConfig = [], stack = [];
-let ch, expected;
-for (let i = 0; i< configSize/2; i++) {
-  leftConfig [i] = bracketsConfig [i][0];
-  rightConfig [i] = bracketsConfig [i][1];
-}
-if (str.length % 2) {
-  return false;
-}
-if (leftConfig.indexOf(str[0]) == rightConfig.indexOf(str[2])) {
-  return false;
-}
-for (let i=0; i < strSize; i++) {
-  ch = str[i];
-  if (leftConfig.includes(ch) > -1) {
-    stack.push();
-  }
-  else if (rightConfig.includes(ch) > -1) {
-    expected = leftConfig[rightConfig.indexOf(ch)];
-    if (stack.length === 0 || stack.pop() != expected) {
-      return false;
+  let leftConfig = [], rightConfig = [], stack = [];
+
+  bracketsConfig.forEach(element => {
+    leftConfig.push(element[0]);
+    rightConfig.push(element[1]);
+  });
+    
+  for (let i of str) {
+    if (leftConfig.includes(i)) {
+      stack.push(i);
+      //console.log('position: ',stack.indexOf(i),',stack: ', stack);
     }
-    else {
-      continue;
+    if (rightConfig.includes(i) && stack.pop() !== leftConfig[rightConfig.indexOf(i)]) {
+        return false;
+      }
     }
-  }
-}
-return (stack.length === 0);
+  return stack.length === 0;
 }
